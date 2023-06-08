@@ -1,7 +1,7 @@
 import axiosBase from '../../app/api';
 import { auth } from '../auth/auth';
 
-let authObj: { token: string; userId: string };
+let authObj: { accessToken: string; userId: string };
 
 auth.subscribe((value) => {
 	authObj = value;
@@ -10,7 +10,7 @@ auth.subscribe((value) => {
 export function getUser() {
 	axiosBase.get('/users', {
 		headers: {
-			authorization: `Bearer ${authObj.token}`
+			authorization: `Bearer ${authObj.accessToken}`
 		}
 	});
 }
