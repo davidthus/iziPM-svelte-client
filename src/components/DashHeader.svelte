@@ -12,7 +12,7 @@ import type { IMsgRes } from "../types/MsgRes";
 const {mutate: createProjectMutation} = useMutation(createProject);
 const {mutate: sendLogoutMutation, isLoading, isSuccess } = useMutation(sendLogout);
 const {data} = useQuery("user", getUser);
-
+console.log(data)
 
   const onSubmit = async ({ projectName }: FormData) => {
     const isUserDefined = typeof userData?.user._id !== "undefined";
