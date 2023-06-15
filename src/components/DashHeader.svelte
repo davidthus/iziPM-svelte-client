@@ -3,11 +3,15 @@ import { useMutation, useQuery } from "@sveltestack/svelte-query";
 import { sendLogout } from "../features/auth/queryFunctions";
 import { createProject } from "../features/projects/queryFunctions";
 import { getUser } from "../features/users/queryFunctions";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../features/users/userApiSlice";
 import type { IMsgRes } from "../types/MsgRes";
+import { superForm } from 'sveltekit-superforms/client';
+
+export let data: PageData;
+
+// Client API:
+const { form } = superForm(data.form);
 
 const {mutate: createProjectMutation} = useMutation(createProject);
 const {mutate: sendLogoutMutation, isLoading, isSuccess } = useMutation(sendLogout);
@@ -53,7 +57,7 @@ console.log(data)
         <p>{userData?.user && userData.user.username}</p>
         <nav>
           <button title="Logout" onClick={sendLogout}>
-      <FontAwesomeIcon icon={faRightFromBracket} />
+      <div class="logout icon" />
     </button>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
