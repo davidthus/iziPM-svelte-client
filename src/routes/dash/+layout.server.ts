@@ -1,13 +1,13 @@
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
-const schema = z.object({
+const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
 });
 
-export const load = async () => {
+export const load = async (event) => {
 	// Server API:
-	const form = await superValidate(schema);
+	const form = await superValidate(event, newProjectSchema);
 
 	// Always return { form } in load and form actions.
 	return { form };
@@ -15,7 +15,7 @@ export const load = async () => {
 
 export const actions = {
 	default: async ({ request }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, newProjectSchema);
 		console.log('POST', form);
 
 		// Convenient validation check:
