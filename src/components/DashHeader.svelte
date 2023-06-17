@@ -41,7 +41,7 @@ console.log(data)
   </script>
 
 
-<SuperDebug />
+<SuperDebug data={$form}/>
 {#if isUserSuccess}
     <header>
       <div>
