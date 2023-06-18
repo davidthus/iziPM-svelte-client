@@ -1,3 +1,4 @@
+/** @type {import('./$types').Actions} */
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
