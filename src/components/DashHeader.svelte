@@ -6,8 +6,6 @@ import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
 import { sendLogout } from "../features/auth/queryFunctions";
 import { createProject } from "../features/projects/queryFunctions";
 import { getUser } from "../features/users/queryFunctions";
-import { selectUserInfo } from "../features/users/userApiSlice";
-import type { IMsgRes } from "../types/MsgRes";
 import type { PageData } from './$types';
 
 export let data: PageData;

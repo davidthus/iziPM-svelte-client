@@ -1,11 +1,13 @@
-/** @type {import('./$types').Actions} */
+import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
+import { createProject } from '../../features/projects/queryFunctions.js';
 
 const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
 });
 
+/** @type {import('./$types').PageServerLoad} */
 export const load = async (event) => {
 	// Server API:
 	const form = await superValidate(event, newProjectSchema);
@@ -14,6 +16,7 @@ export const load = async (event) => {
 	return { form };
 };
 
+/** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ request }) => {
 		const form = await superValidate(request, newProjectSchema);
@@ -26,7 +29,7 @@ export const actions = {
 		}
 
 		// TODO: Do something with the validated data
-
+		await createProject(request.formData());
 		// Yep, return { form } here too
 		return { form };
 	}
