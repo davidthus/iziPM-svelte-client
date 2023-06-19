@@ -38,7 +38,7 @@ console.log(data)
   $: isLogoutSuccess && () => {window.location.href = '/'}
 </script>
 
-<SuperDebug data={$form} />
+<SuperDebug />
 {#if isUserSuccess}
 	<header>
 		<div>
