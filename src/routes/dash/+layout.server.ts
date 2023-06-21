@@ -1,11 +1,21 @@
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
+import { useMutation } from '@sveltestack/svelte-query';
+import { queryClient } from '$lib/query';
 import { z } from 'zod';
+import { getUser } from '../../features/users/queryFunctions';
 import { createProject } from '../../features/projects/queryFunctions.js';
 
 const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
 });
+
+const { mutate: createProjectMutation } = useMutation(createProject, {
+	onSuccess: () => {
+		queryClient.invalidateQueries();
+	}
+});
+const { data: userData } = useQuery('user', getUser);
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async (event) => {
@@ -20,6 +30,7 @@ export const load = async (event) => {
 export const actions = {
 	default: async ({ request }) => {
 		const form = await superValidate(request, newProjectSchema);
+		const isUserDefined = typeof userData?.user._id !== 'undefined';
 		console.log('POST', form);
 
 		// Convenient validation check:
@@ -29,7 +40,9 @@ export const actions = {
 		}
 
 		// TODO: Do something with the validated data
-		await createProject(request.formData());
+		if (isUserDefined) {
+			createProjectMutation(projectName, userData);
+		}
 		// Yep, return { form } here too
 		return { form };
 	}
