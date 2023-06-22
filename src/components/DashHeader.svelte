@@ -1,22 +1,30 @@
 <script lang="ts">
-import { useMutation, useQuery } from "@sveltestack/svelte-query";
-import { superForm } from 'sveltekit-superforms/client';
-import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
-import { sendLogout } from "../features/auth/queryFunctions";
-import { getUser } from "../features/users/queryFunctions";
-import type { PageData } from './$types';
+	import { useMutation, useQuery } from '@sveltestack/svelte-query';
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import { sendLogout } from '../features/auth/queryFunctions';
+	import { getUser } from '../features/users/queryFunctions';
+	import type { newProjectFormData } from './types';
 
-export let data: PageData;
+	export let data: newProjectFormData;
 
-// Client API:
-const { form, errors, resetForm } = superForm(data.form);
+	// Client API:
+	const { form, errors, resetForm } = superForm(data.form);
 
-const {mutate: sendLogoutMutation, isLoading: isLogoutLoading, isSuccess: isLogoutSuccess, isError: isLogoutError, error: logoutError } = useMutation(sendLogout);
-const {data: userData, isUserSuccess} = useQuery("user", getUser);
-console.log(data)
+	const {
+		mutate: sendLogoutMutation,
+		isLoading: isLogoutLoading,
+		isSuccess: isLogoutSuccess,
+		isError: isLogoutError,
+		error: logoutError
+	} = useMutation(sendLogout);
+	const { data: userData, isSuccess: isUserSuccess } = useQuery('user', getUser);
+	console.log(data);
 
-  // redirects when logout is successful
-  $: isLogoutSuccess && () => {window.location.href = '/'}
+	// redirects when logout is successful
+	$: if (isLogoutSuccess) {
+		window.location.href = '/';
+	}
 </script>
 
 <SuperDebug data={$form} />
