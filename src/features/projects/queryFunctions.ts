@@ -6,11 +6,11 @@ interface INewProject {
 }
 
 export function getUserProjects() {
-	axiosBase.get('/users/projects');
+	return axiosBase.get('/users/projects');
 }
 
 export function createProject(newProject: INewProject) {
-	axiosBase.post('/projects', {
+	return axiosBase.post('/projects', {
 		data: { ...newProject }
 	});
 }

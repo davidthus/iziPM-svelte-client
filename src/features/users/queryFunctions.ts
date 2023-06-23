@@ -19,7 +19,7 @@ auth.subscribe((value) => {
 });
 
 export function getUser() {
-	axiosBase.get('/users', {
+	return axiosBase.get('/users', {
 		headers: {
 			authorization: `Bearer ${authObj.accessToken}`
 		}
@@ -27,5 +27,5 @@ export function getUser() {
 }
 
 export function updateUser(newUserInfo: InewUserInfo) {
-	axiosBase.patch('/users', { data: { ...newUserInfo } });
+	return axiosBase.patch('/users', { data: { ...newUserInfo } });
 }

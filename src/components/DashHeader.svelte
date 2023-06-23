@@ -4,9 +4,8 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
 	import { getUser } from '../features/users/queryFunctions';
-	import type { newProjectFormData } from './types';
 
-	export let data: newProjectFormData;
+	export let data;
 
 	// Client API:
 	const { form, errors, resetForm } = superForm(data.form);

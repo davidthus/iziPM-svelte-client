@@ -7,21 +7,21 @@ interface ICreds {
 }
 
 export function login(credentials: ICreds) {
-	axiosBase.post('/auth/login', {
+	return axiosBase.post('/auth/login', {
 		data: credentials
 	});
 }
 
 export function signup(credentials: ICreds) {
-	axiosBase.post('/auth/signup', {
+	return axiosBase.post('/auth/signup', {
 		data: credentials
 	});
 }
 
 export function sendLogout() {
-	axiosBase.post('/auth/logout');
+	return axiosBase.post('/auth/logout');
 }
 
 export function refresh() {
-	axiosBase.get('/auth/refresh');
+	return axiosBase.get('/auth/refresh');
 }

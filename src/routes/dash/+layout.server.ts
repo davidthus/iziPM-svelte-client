@@ -1,10 +1,10 @@
-import { fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
-import { useMutation } from '@sveltestack/svelte-query';
 import { queryClient } from '$lib/query';
+import { fail } from '@sveltejs/kit';
+import { useMutation, useQuery } from '@sveltestack/svelte-query';
+import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
-import { getUser } from '../../features/users/queryFunctions';
 import { createProject } from '../../features/projects/queryFunctions.js';
+import { getUser } from '../../features/users/queryFunctions';
 
 const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
