@@ -1,10 +1,21 @@
 import { queryClient } from '$lib/query';
 import { fail } from '@sveltejs/kit';
+import type { ServerRequest } from '@sveltejs/kit/types/hooks';
+import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 import { useMutation, useQuery } from '@sveltestack/svelte-query';
+import type { AxiosResponse } from 'axios';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { createProject } from '../../features/projects/queryFunctions.js';
 import { getUser } from '../../features/users/queryFunctions';
+
+// Define the expected type for the useQuery result
+type UserQueryResult = UseQueryStoreResult<
+	AxiosResponse<any, any>,
+	unknown,
+	AxiosResponse<any, any>,
+	'user'
+>;
 
 const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
@@ -15,7 +26,9 @@ const { mutate: createProjectMutation } = useMutation(createProject, {
 		queryClient.invalidateQueries();
 	}
 });
-const { data: userData } = useQuery('user', getUser);
+
+const queryResult: UserQueryResult = useQuery('user', getUser);
+const userData = queryResult as unknown as { data: any };
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async (event) => {
@@ -28,7 +41,7 @@ export const load = async (event) => {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	default: async ({ request }) => {
+	default: async ({ request }: { request: ServerRequest }) => {
 		const form = await superValidate(request, newProjectSchema);
 		const isUserDefined = typeof userData?.user._id !== 'undefined';
 		console.log('POST', form);
