@@ -30,7 +30,6 @@ const { mutate: createProjectMutation } = useMutation(createProject, {
 const queryResult: UserQueryResult = useQuery('user', getUser);
 const userData = queryResult as unknown as { data: any };
 
-/** @type {import('./$types').PageServerLoad} */
 export const load = async (event) => {
 	// Server API:
 	const form = await superValidate(event, newProjectSchema);
@@ -39,11 +38,10 @@ export const load = async (event) => {
 	return { form };
 };
 
-/** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ request }: { request: ServerRequest }) => {
 		const form = await superValidate(request, newProjectSchema);
-		const isUserDefined = typeof userData?.user._id !== 'undefined';
+		const isUserDefined = typeof userData?.data._id !== 'undefined';
 		console.log('POST', form);
 
 		// Convenient validation check:
@@ -54,7 +52,7 @@ export const actions = {
 
 		// TODO: Do something with the validated data
 		if (isUserDefined) {
-			createProjectMutation(projectName, userData);
+			createProjectMutation(request.formData().projectName, userData);
 		}
 		// Yep, return { form } here too
 		return { form };
