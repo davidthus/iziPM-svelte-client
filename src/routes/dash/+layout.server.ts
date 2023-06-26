@@ -8,6 +8,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { createProject } from '../../features/projects/queryFunctions.js';
 import { getUser } from '../../features/users/queryFunctions';
+import type { IUser } from '../../types/user.js';
 
 // Define the expected type for the useQuery result
 type UserQueryResult = UseQueryStoreResult<
@@ -28,7 +29,7 @@ const { mutate: createProjectMutation } = useMutation(createProject, {
 });
 
 const queryResult: UserQueryResult = useQuery('user', getUser);
-const userData = queryResult as unknown as { data: any };
+const userData = queryResult as unknown as { data: IUser };
 
 export const load = async (event) => {
 	// Server API:
@@ -38,23 +39,25 @@ export const load = async (event) => {
 	return { form };
 };
 
-export const actions = {
-	default: async ({ request }: { request: ServerRequest }) => {
-		const form = await superValidate(request, newProjectSchema);
-		const isUserDefined = typeof userData?.data._id !== 'undefined';
-		console.log('POST', form);
+export const config = {
+	actions: {
+		default: async ({ request }: { request: ServerRequest }) => {
+			const form = await superValidate(request, newProjectSchema);
+			const isUserDefined = typeof userData?.data._id !== 'undefined';
+			console.log('POST', form);
 
-		// Convenient validation check:
-		if (!form.valid) {
-			// Again, always return { form } and things will just work.
-			return fail(400, { form });
-		}
+			// Convenient validation check:
+			if (!form.valid) {
+				// Again, always return { form } and things will just work.
+				return fail(400, { form });
+			}
 
-		// TODO: Do something with the validated data
-		if (isUserDefined) {
-			createProjectMutation(request.formData().projectName, userData);
+			// TODO: Do something with the validated data
+			if (isUserDefined) {
+				createProjectMutation(request.formData().projectName, userData);
+			}
+			// Yep, return { form } here too
+			return { form };
 		}
-		// Yep, return { form } here too
-		return { form };
 	}
 };
