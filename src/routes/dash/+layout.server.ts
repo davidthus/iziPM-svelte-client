@@ -1,6 +1,6 @@
 import { queryClient } from '$lib/query';
+import type { RequestEvent } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
-import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 import type { UseQueryStoreResult } from '@sveltestack/svelte-query';
 import { useMutation, useQuery } from '@sveltestack/svelte-query';
 import type { AxiosResponse } from 'axios';
@@ -17,6 +17,7 @@ type UserQueryResult = UseQueryStoreResult<
 	AxiosResponse<any, any>,
 	'user'
 >;
+type CreateProjectMutationResult = ReturnType<typeof useMutation>;
 
 const newProjectSchema = z.object({
 	projectName: z.string().min(4).max(30)
@@ -26,7 +27,7 @@ const { mutate: createProjectMutation } = useMutation(createProject, {
 	onSuccess: () => {
 		queryClient.invalidateQueries();
 	}
-});
+}) as CreateProjectMutationResult;
 
 const queryResult: UserQueryResult = useQuery('user', getUser);
 const userData = queryResult as unknown as { data: IUser };
@@ -41,7 +42,7 @@ export const load = async (event) => {
 
 export const config = {
 	actions: {
-		default: async ({ request }: { request: ServerRequest }) => {
+		default: async ({ request }: RequestEvent) => {
 			const form = await superValidate(request, newProjectSchema);
 			const isUserDefined = typeof userData?.data._id !== 'undefined';
 			console.log('POST', form);
