@@ -1,4 +1,4 @@
-import axiosBase from '../../app/api';
+import client from '../../app/api';
 
 interface INewProject {
 	userId: string;
@@ -6,11 +6,11 @@ interface INewProject {
 }
 
 export function getUserProjects() {
-	return axiosBase.get('/users/projects');
+	return client.get('/users/projects');
 }
 
 export function createProject(newProject: INewProject) {
-	return axiosBase.post('/projects', {
+	return client.post('/projects', {
 		data: { ...newProject }
 	});
 }

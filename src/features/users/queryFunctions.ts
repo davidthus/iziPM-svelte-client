@@ -1,4 +1,4 @@
-import axiosBase from '../../app/api';
+import client from '../../app/api';
 import { auth } from '../auth/auth';
 
 interface InewUserInfo {
@@ -19,7 +19,7 @@ auth.subscribe((value) => {
 });
 
 export function getUser() {
-	return axiosBase.get('/users', {
+	return client.get('/users', {
 		headers: {
 			authorization: `Bearer ${authObj.accessToken}`
 		}
@@ -27,5 +27,5 @@ export function getUser() {
 }
 
 export function updateUser(newUserInfo: InewUserInfo) {
-	return axiosBase.patch('/users', { data: { ...newUserInfo } });
+	return client.patch('/users', { data: { ...newUserInfo } });
 }

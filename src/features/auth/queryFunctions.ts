@@ -1,4 +1,4 @@
-import axiosBase from '../../app/api';
+import client from '../../app/api';
 
 interface ICreds {
 	email: string;
@@ -7,21 +7,21 @@ interface ICreds {
 }
 
 export function login(credentials: ICreds) {
-	return axiosBase.post('/auth/login', {
+	return client.post('/auth/login', {
 		data: credentials
 	});
 }
 
 export function signup(credentials: ICreds) {
-	return axiosBase.post('/auth/signup', {
+	return client.post('/auth/signup', {
 		data: credentials
 	});
 }
 
 export function sendLogout() {
-	return axiosBase.post('/auth/logout');
+	return client.post('/auth/logout');
 }
 
 export function refresh() {
-	return axiosBase.get('/auth/refresh');
+	return client.get('/auth/refresh');
 }
