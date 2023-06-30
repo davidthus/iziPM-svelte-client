@@ -1,4 +1,4 @@
-import client from '../../app/api';
+import { request } from '../../app/api';
 
 interface INewProject {
 	userId: string;
@@ -6,11 +6,12 @@ interface INewProject {
 }
 
 export function getUserProjects() {
-	return client.get('/users/projects');
+	return request({ url: '/users/projects' });
 }
 
 export function createProject(newProject: INewProject) {
-	return client.post('/projects', {
-		data: { ...newProject }
-	});
+	// return client.post('/projects', {
+	// 	data: { ...newProject }
+	// });
+	return request({ url: '/projects', method: 'post', data: { ...newProject } });
 }
