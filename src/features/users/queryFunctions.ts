@@ -1,4 +1,4 @@
-import client from '../../app/api';
+import { request } from '../../app/api';
 import { auth } from '../auth/auth';
 
 interface InewUserInfo {
@@ -19,13 +19,9 @@ auth.subscribe((value) => {
 });
 
 export function getUser() {
-	return client.get('/users', {
-		headers: {
-			authorization: `Bearer ${authObj.accessToken}`
-		}
-	});
+	return request({ url: '/users', headers: { authorization: `Bearer ${authObj.accessToken}` } });
 }
 
 export function updateUser(newUserInfo: InewUserInfo) {
-	return client.patch('/users', { data: { ...newUserInfo } });
+	return request({ url: '/users', method: 'patch', data: { ...newUserInfo } });
 }
