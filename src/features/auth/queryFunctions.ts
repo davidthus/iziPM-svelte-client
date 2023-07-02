@@ -1,4 +1,4 @@
-import client from '../../app/api';
+import { request } from '../../app/api';
 
 interface ICreds {
 	email: string;
@@ -7,21 +7,17 @@ interface ICreds {
 }
 
 export function login(credentials: ICreds) {
-	return client.post('/auth/login', {
-		data: credentials
-	});
+	return request({ url: '/auth/login', data: credentials });
 }
 
 export function signup(credentials: ICreds) {
-	return client.post('/auth/signup', {
-		data: credentials
-	});
+	return request({ url: '/auth/signup', data: credentials });
 }
 
 export function sendLogout() {
-	return client.post('/auth/logout');
+	return request({ url: '/auth/logout' });
 }
 
 export function refresh() {
-	return client.get('/auth/refresh');
+	return request({ url: '/auth/refresh' });
 }
