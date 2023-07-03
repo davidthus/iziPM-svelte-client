@@ -10,8 +10,5 @@ export function getUserProjects() {
 }
 
 export function createProject(newProject: INewProject) {
-	// return client.post('/projects', {
-	// 	data: { ...newProject }
-	// });
 	return request({ url: '/projects', method: 'post', data: { ...newProject } });
 }
