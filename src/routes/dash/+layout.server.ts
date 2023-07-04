@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { queryClient } from '$lib/query';
 import type { RequestEvent } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
