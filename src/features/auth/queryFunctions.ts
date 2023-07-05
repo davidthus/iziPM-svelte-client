@@ -6,18 +6,22 @@ interface ICreds {
 	username?: string;
 }
 
-export function login(credentials: ICreds) {
+interface IAccessToken {
+	accessToken: string;
+}
+
+export function login(credentials: ICreds): Promise<IAccessToken> {
 	return request({ url: '/auth/login', data: credentials });
 }
 
-export function signup(credentials: ICreds) {
+export function signup(credentials: ICreds): Promise<IAccessToken> {
 	return request({ url: '/auth/signup', data: credentials });
 }
 
-export function sendLogout() {
+export function sendLogout(): Promise<{ message: string }> {
 	return request({ url: '/auth/logout' });
 }
 
-export function refresh() {
+export function refresh(): Promise<IAccessToken> {
 	return request({ url: '/auth/refresh' });
 }
