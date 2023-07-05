@@ -3,6 +3,7 @@
 	import type { z } from 'zod';
 	import DashFooter from '../../components/DashFooter.svelte';
 	import DashHeader from '../../components/DashHeader.svelte';
+	import Sidebar from '../../components/Sidebar.svelte';
 
 	interface FormData {
 		form: SuperValidated<
@@ -25,7 +26,8 @@
 	export let data;
 </script>
 
-<DashHeader {data} />
+<DashHeader />
+<Sidebar {data} />
 <div>
 	<slot />
 </div>
