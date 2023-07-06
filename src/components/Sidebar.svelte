@@ -5,6 +5,7 @@
 	import { sendLogout } from '../features/auth/queryFunctions';
 	import { getUser } from '../features/users/queryFunctions';
 	export let data;
+	export let toggleSidebar: () => void;
 
 	// Client API:
 	const { form, errors, resetForm } = superForm(data.form);
@@ -35,6 +36,7 @@
 			<button title="Logout" on:click={sendLogout}>
 				<div class="logout icon" />
 			</button>
+			<button title="Close Sidebar" on:click={toggleSidebar}> Close sidebar </button>
 		</div>
 	</header>
 {:else if $logoutMutation.isLoading}
