@@ -31,7 +31,7 @@
 		? tasksToDoWithinAWeek.sort((a: any, b: any) => Number(a.dueDate) - Number(b.dueDate))
 		: null;
 
-	const { avatar } = $user.data;
+	const { avatar } = $user.data.user;
 	// Convert the binary data to a base64-encoded data URI
 	const dataURI =
 		'data:' +
@@ -52,12 +52,14 @@
 			{/each}
 		{/if}
 	</ul>
-	<section>
-		<img src={dataURI} alt="User profile picture" />
-		<form action="">
-			<p>{$user?.data.username}</p>
-			<p>{$user?.data.email}</p>
-			<input type="password" bind:value={$user.data.password} />
-		</form>
-	</section>
+	{#if $user.data}
+		<section>
+			<img src={dataURI} alt="User profile picture" />
+			<form action="">
+				<p>{$user?.data.user.username}</p>
+				<p>{$user?.data.user.email}</p>
+				<input type="password" bind:value={$user?.data.user.password} />
+			</form>
+		</section>
+	{/if}
 </main>

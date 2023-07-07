@@ -11,7 +11,7 @@ interface ICreatedProject {
 	projectId: string;
 }
 
-export function getUserProjects(): Promise<IProject> {
+export function getUserProjects(): Promise<{ projects: IProject[] }> {
 	return request({ url: '/users/projects' });
 }
 
