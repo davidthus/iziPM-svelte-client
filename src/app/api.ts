@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { auth } from '../features/auth/auth';
+import { auth, setCredentials } from '../features/auth/auth';
 import getTokenPayload from '../util/getTokenPayload';
-import { setCredentials } from '../features/auth/auth';
 
-let accessToken;
+let accessToken: string;
 
-auth.subscribe(({ accessTokenValue }) => {
+auth.subscribe(({ accessToken: accessTokenValue }) => {
 	accessToken = accessTokenValue;
 });
 
