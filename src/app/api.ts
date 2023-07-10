@@ -27,10 +27,11 @@ export const request = async ({ ...options }) => {
 
 		if (refreshResult?.data) {
 			const typedRefreshResult = refreshResult.data as { accessToken: string };
-			setCredentials(getTokenPayload(typedRefreshResult.accessToken));
+			const { accessToken, userId } = getTokenPayload(typedRefreshResult.accessToken);
+			setCredentials(accessToken, userId);
 
 			// retry original query with new access token
-			result = await client(option);
+			result = await client(options);
 		} else {
 			const error = refreshResult.error as {
 				status: number;
