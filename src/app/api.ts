@@ -2,6 +2,13 @@ import axios from 'axios';
 import { auth, setCredentials } from '../features/auth/auth';
 import getTokenPayload from '../util/getTokenPayload';
 
+interface Response {
+	data: unknown;
+	status: number;
+	headers: unknown;
+	config: unknown;
+}
+
 let accessToken: string;
 
 auth.subscribe(({ accessToken: accessTokenValue }) => {
@@ -19,33 +26,36 @@ const client = axios.create({
 	]
 });
 
-export const request = async ({ ...options }) => {
-	let result = await client(options);
+export async function request({ ...options }) {
+	const result = client(options).catch((error) => {
+		if (error?.response.status === 403 || error?.response.status === 401) {
+			// start of if block
+			client({ url: '/auth/refresh' })
+				.then((res: Response) => {
+					const typedRefreshResult = res.data as { accessToken: string };
+					const { accessToken, userId } = getTokenPayload(typedRefreshResult.accessToken);
+					setCredentials(accessToken, userId);
 
-	if (result?.error?.status === 403 || result?.error?.status === 401) {
-		const refreshResult = await client({ url: '/auth/refresh' });
+					// retry original query with new access token
+					return client(options);
+				})
+				.catch(function (error) {
+					const refreshError = error.response as {
+						status: number;
+						data: { message: string };
+					};
 
-		if (refreshResult?.data) {
-			const typedRefreshResult = refreshResult.data as { accessToken: string };
-			const { accessToken, userId } = getTokenPayload(typedRefreshResult.accessToken);
-			setCredentials(accessToken, userId);
+					if (error.status === 403) {
+						error.data.message = 'Your login has expired. ';
+					}
 
-			// retry original query with new access token
-			result = await client(options);
-		} else {
-			const error = refreshResult.error as {
-				status: number;
-				data: { message: string };
-			};
-
-			if (error.status === 403) {
-				error.data.message = 'Your login has expired. ';
-			}
-
-			return refreshResult;
+					return refreshError;
+				});
+			// end of if block
 		}
-	}
-	return result;
-};
+	});
+
+	return result?.data;
+}
 
 export default client;
