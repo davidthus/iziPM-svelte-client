@@ -1,13 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { auth, setCredentials } from '../features/auth/auth';
 import getTokenPayload from '../util/getTokenPayload';
-
-interface Response {
-	data: unknown;
-	status: number;
-	headers: unknown;
-	config: unknown;
-}
 
 let accessToken: string;
 
@@ -26,36 +21,33 @@ const client = axios.create({
 	]
 });
 
-export async function request({ ...options }) {
-	const result = client(options).catch((error) => {
-		if (error?.response.status === 403 || error?.response.status === 401) {
-			// start of if block
-			client({ url: '/auth/refresh' })
-				.then((res: Response) => {
-					const typedRefreshResult = res.data as { accessToken: string };
-					const { accessToken, userId } = getTokenPayload(typedRefreshResult.accessToken);
-					setCredentials(accessToken, userId);
-
-					// retry original query with new access token
-					return client(options);
-				})
-				.catch(function (error) {
-					const refreshError = error.response as {
-						status: number;
-						data: { message: string };
-					};
-
-					if (error.status === 403) {
-						error.data.message = 'Your login has expired. ';
-					}
-
-					return refreshError;
+export async function request<ReturnData>({ ...options }: AxiosRequestConfig): Promise<ReturnData> {
+	try {
+		const response: AxiosResponse<ReturnData> = await client<ReturnData>(options);
+		return response.data;
+	} catch (error: any) {
+		if (error?.response?.status === 403 || error?.response?.status === 401) {
+			try {
+				const refreshResponse: AxiosResponse<{ accessToken: string }> = await client({
+					url: '/auth/refresh'
 				});
-			// end of if block
-		}
-	});
+				const { accessToken, userId } = getTokenPayload(refreshResponse.data.accessToken);
+				setCredentials(accessToken, userId);
 
-	return result?.data;
+				// Retry original query with new access token
+				const retryResponse: AxiosResponse<ReturnData> = await client<ReturnData>(options);
+				return retryResponse.data;
+			} catch ({ response: refreshError }: any) {
+				if (refreshError.status === 403) {
+					refreshError.data.message = 'Your login has expired. ';
+				}
+
+				throw refreshError;
+			}
+		} else {
+			throw error;
+		}
+	}
 }
 
 export default client;
