@@ -1,5 +1,5 @@
 import { request } from '../../app/api';
-import { auth } from '../auth/auth';
+import type { IUser } from '../../types/user';
 
 interface InewUserInfo {
 	userId: string;
@@ -12,16 +12,10 @@ interface InewUserInfo {
 	username: string;
 }
 
-let authObj: { accessToken: string; userId: string };
-
-auth.subscribe((value) => {
-	authObj = value;
-});
-
-export function getUser() {
-	return request({ url: '/users', headers: { authorization: `Bearer ${authObj.accessToken}` } });
+export function getUser(): Promise<{ user: IUser }> {
+	return request({ url: '/users' });
 }
 
-export function updateUser(newUserInfo: InewUserInfo) {
+export function updateUser(newUserInfo: InewUserInfo): Promise<{ message: string }> {
 	return request({ url: '/users', method: 'patch', data: { ...newUserInfo } });
 }

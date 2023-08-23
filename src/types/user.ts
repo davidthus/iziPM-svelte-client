@@ -7,7 +7,7 @@ export interface IUser {
 	password: string;
 	notes: string;
 	avatar: {
-		// data: Buffer;
+		data: Buffer;
 		contentType: string;
 	};
 	projects: IProject[];
