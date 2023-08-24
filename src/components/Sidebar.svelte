@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { useMutation, useQuery } from '@sveltestack/svelte-query';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
@@ -8,7 +7,7 @@
 	export let toggleSidebar: () => void;
 
 	// Client API:
-	const { form, errors, resetForm } = superForm(data.form);
+	const { form, errors } = superForm(data.form);
 
 	const logoutMutation = useMutation(sendLogout);
 	const userQuery = useQuery('user', getUser);
@@ -24,7 +23,7 @@
 {#if $userQuery.isSuccess}
 	<header>
 		<div>
-			<form method="POST" on:submit={() => resetForm()}>
+			<form method="POST">
 				<input type="text" name="projectName" bind:value={$form.projectName} />
 				{#if $errors.projectName}
 					<p>{$errors.projectName}</p>
@@ -33,10 +32,12 @@
 			</form>
 		</div>
 		<div>
-			<button title="Logout" on:click={sendLogout}>
-				<div class="logout icon" />
-			</button>
-			<button title="Close Sidebar" on:click={toggleSidebar}> Close sidebar </button>
+			<form action="/actions?/logout" method="post">
+				<button title="Logout" type="submit" on:click={sendLogout}>
+					<div class="logout icon" />
+				</button>
+			</form>
+			<button title="Close Sidebar" on:click={toggleSidebar}>Close sidebar</button>
 		</div>
 	</header>
 {:else if $logoutMutation.isLoading}
