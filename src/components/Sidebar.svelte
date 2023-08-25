@@ -2,7 +2,6 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
-	import { getUser } from '../features/users/queryFunctions';
 	export let data;
 	export let toggleSidebar: () => void;
 
@@ -10,7 +9,6 @@
 	const { form, errors } = superForm(data.form);
 
 	const logoutMutation = useMutation(sendLogout);
-	const userQuery = useQuery('user', getUser);
 	console.log(data);
 
 	// redirects when logout is successful
@@ -20,10 +18,10 @@
 </script>
 
 <SuperDebug data={$form} />
-{#if $userQuery.isSuccess}
+{#if data.user}
 	<header>
 		<div>
-			<form method="POST">
+			<form action="/actions?/createProject" method="POST">
 				<input type="text" name="projectName" bind:value={$form.projectName} />
 				{#if $errors.projectName}
 					<p>{$errors.projectName}</p>
