@@ -12,8 +12,8 @@ interface InewUserInfo {
 	username: string;
 }
 
-export function getUser(): Promise<{ user: IUser }> {
-	return request({ url: '/users' });
+export async function getUser(): Promise<{ user: IUser }> {
+	return await request({ url: '/users' });
 }
 
 export function updateUser(newUserInfo: InewUserInfo): Promise<{ message: string }> {

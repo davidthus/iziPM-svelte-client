@@ -1,20 +1,15 @@
 <script lang="ts">
+	import type { IUser } from '@/types/user';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
-	export let data;
+	export let data: { user: IUser };
 	export let toggleSidebar: () => void;
 
 	// Client API:
 	const { form, errors } = superForm(data.form);
 
-	const logoutMutation = useMutation(sendLogout);
 	console.log(data);
-
-	// redirects when logout is successful
-	$: if ($logoutMutation.isSuccess) {
-		window.location.href = '/';
-	}
 </script>
 
 <SuperDebug data={$form} />
@@ -38,8 +33,4 @@
 			<button title="Close Sidebar" on:click={toggleSidebar}>Close sidebar</button>
 		</div>
 	</header>
-{:else if $logoutMutation.isLoading}
-	<p>Logging out...</p>
-{:else if $logoutMutation.isError}
-	<p>{$logoutMutation.error?.data?.message}</p>
 {/if}

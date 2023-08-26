@@ -5,8 +5,8 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const actions: Actions = {
 	logout: async () => {
-		logOut();
 		sendLogout();
+		logOut();
 		redirect(303, '/');
 	},
 	createProject: async () => {
