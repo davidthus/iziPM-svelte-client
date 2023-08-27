@@ -1,7 +1,7 @@
+import type { LayoutServerLoad } from './$types';
 import { getUser } from '@/features/users/queryFunctions';
-import type { PageLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const load: LayoutServerLoad = async () => {
 	const user = await getUser();
 	return { user };
 };

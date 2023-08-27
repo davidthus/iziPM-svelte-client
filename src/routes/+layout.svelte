@@ -13,9 +13,11 @@
 	const toggleSidebar = () => {
 		isSidebarOpen.update((prev) => !prev);
 	};
+
+	$: ({ data } = $page);
 </script>
 
 {#if $isSidebarOpen}
-	<Sidebar {toggleSidebar} data={$page.data} />
+	<Sidebar {toggleSidebar} {data} />
 {/if}
 <slot />
