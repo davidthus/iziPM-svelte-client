@@ -4,8 +4,8 @@
 	</a>
 	<nav>
 		<ul>
-			<li><a href="#">01</a></li>
-			<li><a href="#">02</a></li>
+			<li><a href="/">01</a></li>
+			<li><a href="/">02</a></li>
 		</ul>
 	</nav>
 </header>

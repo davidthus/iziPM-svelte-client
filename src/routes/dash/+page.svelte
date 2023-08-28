@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { weekInMilliseconds } from '../../constants/time';
+	import { weekInMilliseconds } from 'constants/index';
 	import { getUserProjects } from '../../features/projects/queryFunctions';
 	import { getUser } from '../../features/users/queryFunctions';
 	import type { IProject, ITask } from '../../types/project';

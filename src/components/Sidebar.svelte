@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { IUser } from '@/types/user';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
-	export let data: { user: IUser };
+	import type { PageData } from '../routes/$types';
+	export let data: PageData;
 	export let toggleSidebar: () => void;
 
 	// Client API:
