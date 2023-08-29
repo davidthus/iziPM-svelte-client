@@ -15,6 +15,7 @@
 	};
 
 	$: ({ data } = $page);
+	console.log($page);
 </script>
 
 {#if $isSidebarOpen}
