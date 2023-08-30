@@ -7,7 +7,7 @@
 	export let toggleSidebar: () => void;
 
 	// Client API:
-	const { form, errors } = superForm(data.form);
+	const { form, errors } = superForm(data.newProjectForm);
 
 	console.log(data);
 </script>
