@@ -24,8 +24,9 @@ export const actions: Actions = {
 			password: string;
 		};
 
-		const { accessToken } = await login({ email, password }).unwrap();
-		setCredentials(getTokenPayload(accessToken));
+		const { accessToken } = await login({ email, password });
+		const { userId } = getTokenPayload(accessToken);
+		setCredentials(accessToken, userId);
 		redirect(308, '/dash');
 	}
 };
