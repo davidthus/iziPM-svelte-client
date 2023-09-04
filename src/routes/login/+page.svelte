@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { useMutation } from '@sveltestack/svelte-query';
-	import { writable } from 'svelte/store';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { setCredentials } from '../../features/auth/auth';
-	import getTokenPayload from '../../util/getTokenPayload';
+	import type { PageData } from './$types';
 
-	export let data;
+	export let data: PageData;
 
 	// Client API:
 	const { form } = superForm(data.form);
