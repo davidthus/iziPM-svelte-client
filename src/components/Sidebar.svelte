@@ -2,8 +2,8 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { sendLogout } from '../features/auth/queryFunctions';
-	import type { PageData } from '../routes/$types';
-	export let data: PageData;
+	import type { LayoutData } from '../routes/$types';
+	export let data: LayoutData;
 	export let toggleSidebar: () => void;
 
 	// Client API:
