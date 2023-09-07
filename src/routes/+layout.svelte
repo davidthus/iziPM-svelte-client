@@ -1,6 +1,6 @@
-<script>
-	import { page } from '$app/stores';
+<script lang="ts">
 	import { writable } from 'svelte/store';
+	import type { LayoutData } from './$types';
 
 	import '@skeletonlabs/skeleton/themes/theme-vintage.css';
 	// NOTE: this will be renamed skeleton.css in the v2.x release.
@@ -9,16 +9,16 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import '../app.postcss';
 
+	export let data: LayoutData;
+
+	const { form, errors } = superForm(data.newProjectForm);
 	const isSidebarOpen = writable(true);
 
 	const toggleSidebar = () => {
 		isSidebarOpen.update((prev) => !prev);
 	};
 
-	$: ({ data } = $page);
-	console.log($page);
 	// Client API:
-	$: ({ form, errors } = superForm(data.newProjectForm));
 </script>
 
 {#if $isSidebarOpen}
