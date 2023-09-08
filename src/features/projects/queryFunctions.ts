@@ -11,10 +11,10 @@ interface ICreatedProject {
 	projectId: string;
 }
 
-export function getUserProjects(): Promise<{ projects: IProject[] }> {
-	return request({ url: '/users/projects' });
+export async function getUserProjects(): Promise<{ projects: IProject[] }> {
+	return await request({ url: '/users/projects' });
 }
 
-export function createProject(newProject: INewProject): Promise<ICreatedProject> {
-	return request({ url: '/projects', method: 'post', data: { ...newProject } });
+export async function createProject(newProject: INewProject): Promise<ICreatedProject> {
+	return await request({ url: '/projects', method: 'post', data: { ...newProject } });
 }

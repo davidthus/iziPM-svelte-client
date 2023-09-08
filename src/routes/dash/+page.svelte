@@ -1,21 +1,13 @@
 <script lang="ts">
-	import { useQuery } from '@sveltestack/svelte-query';
-	import { weekInMilliseconds } from 'constants/index';
-	import { getUserProjects } from '../../features/projects/queryFunctions';
-	import { getUser } from '../../features/users/queryFunctions';
+	import { weekInMilliseconds } from '@/constants';
 	import type { IProject, ITask } from '../../types/project';
 	import type { IUser } from '../../types/user';
+	import type { PageData } from './$types';
 
-	type ProjectsQueryResult = {
-		projects: IProject[];
-	};
+	export let data: PageData;
 
-	const projectsQuery = useQuery<ProjectsQueryResult>('userProjects', getUserProjects);
-	const projectsList = $projectsQuery.data?.projects;
-	const user = useQuery('user', getUser);
-
-	const tasksToDoWithinAWeek = projectsList
-		? projectsList
+	const tasksToDoWithinAWeek = data.projects
+		? data.projects
 				.map((project: IProject) => {
 					return project.tasks.filter(
 						(task) => Number(task.dueDate) < Date.now() + weekInMilliseconds
@@ -23,7 +15,7 @@
 				})
 				.flat()
 				.filter((task: ITask) =>
-					task.assignedTo.some((member: IUser) => member._id === $user.data?.user._id)
+					task.assignedTo.some((member: IUser) => member._id === data?.user._id)
 				)
 		: null;
 
@@ -31,7 +23,7 @@
 		? tasksToDoWithinAWeek.sort((a: any, b: any) => Number(a.dueDate) - Number(b.dueDate))
 		: null;
 
-	const { avatar } = $user.data.user;
+	const { avatar } = data.user;
 	// Convert the binary data to a base64-encoded data URI
 	const dataURI =
 		'data:' +
@@ -52,13 +44,13 @@
 			{/each}
 		{/if}
 	</ul>
-	{#if $user.data}
+	{#if data.user}
 		<section>
-			<img src={dataURI} alt="User profile picture" />
+			<img src={dataURI} alt="" />
 			<form action="">
-				<p>{$user?.data.user.username}</p>
-				<p>{$user?.data.user.email}</p>
-				<input type="password" bind:value={$user?.data.user.password} />
+				<p>{data.user.username}</p>
+				<p>{data.user.email}</p>
+				<input type="password" bind:value={data.user.password} />
 			</form>
 		</section>
 	{/if}
