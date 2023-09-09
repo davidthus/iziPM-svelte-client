@@ -21,8 +21,8 @@
 	// Client API:
 </script>
 
-{#if $isSidebarOpen}
-	{#if data.user}
+{#if data.user}
+	{#if $isSidebarOpen}
 		<header>
 			<div>
 				<form action="/actions?/createProject" method="POST">
@@ -43,5 +43,7 @@
 			</div>
 		</header>
 	{/if}
+{:else}
+	<button title="Open Sidebar" on:click={toggleSidebar}>Open Sidebar</button>
 {/if}
 <slot />
