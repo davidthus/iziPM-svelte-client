@@ -17,8 +17,6 @@
 	const toggleSidebar = () => {
 		isSidebarOpen.update((prev) => !prev);
 	};
-
-	// Client API:
 </script>
 
 {#if data.user}
