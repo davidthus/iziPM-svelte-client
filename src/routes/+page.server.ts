@@ -10,6 +10,6 @@ auth.subscribe((value) => {
 
 export const load: PageServerLoad = async () => {
 	if (authObject.accessToken || authObject.userId) {
-		redirect(308, '/dash');
+		throw redirect(308, '/dash');
 	}
 };
