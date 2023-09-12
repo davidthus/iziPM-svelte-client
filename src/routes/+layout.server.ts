@@ -1,4 +1,3 @@
-import { page } from '$app/stores';
 import { getUser } from '@/features/users/queryFunctions';
 import { redirect } from '@sveltejs/kit';
 import { auth } from 'auth/auth';
@@ -23,7 +22,7 @@ export const load: LayoutServerLoad = async ({ url }) => {
 		const user = await getUser();
 		return { user, newProjectForm };
 	} else {
-		if (url.pathname !== '/signup') {
+		if (url.pathname !== ('/signup' || '/login')) {
 			throw redirect(308, '/signup');
 		}
 	}
