@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import axios from 'axios';
 import { auth, setCredentials } from '../features/auth/auth';
+
+import axios from 'axios';
 import getTokenPayload from '../util/getTokenPayload';
 
 let accessToken: string;
@@ -22,6 +24,7 @@ const client = axios.create({
 });
 
 export async function request<ReturnData>({ ...options }: AxiosRequestConfig): Promise<ReturnData> {
+	console.log(options);
 	try {
 		const response: AxiosResponse<ReturnData> = await client<ReturnData>(options);
 		return response.data;
