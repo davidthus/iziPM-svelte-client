@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LabelInput from 'components/LabelInput.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 
@@ -14,14 +15,9 @@
 	</header>
 	<main>
 		<form class="form" method="post">
-			<label for="username">Username</label>
-			<input type="username" name="username" bind:value={$form.username} />
-
-			<label for="email">E-mail</label>
-			<input type="email" name="email" bind:value={$form.email} />
-
-			<label for="password">Password</label>
-			<input type="password" name="password" bind:value={$form.password} />
+			<LabelInput value={$form.username} name="username">Username</LabelInput>
+			<LabelInput value={$form.email} name="email">Email</LabelInput>
+			<LabelInput value={$form.password} name="password">Password</LabelInput>
 
 			<button type="submit">Sign up</button>
 		</form>
