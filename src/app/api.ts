@@ -14,14 +14,18 @@ auth.subscribe(({ accessToken: accessTokenValue }) => {
 
 const client = axios.create({
 	baseURL: 'http://localhost:3500',
-	withCredentials: true,
-	transformRequest: [
-		(data, headers) => {
-			headers.Authorization = `Bearer ${accessToken}`;
-			return data;
-		}
-	]
+	withCredentials: true
 });
+
+client.interceptors.request.use(
+	(config) => {
+		config.headers['Authorization'] = 'Bearer ' + accessToken;
+		return config;
+	},
+	(error) => {
+		Promise.reject(error);
+	}
+);
 
 export async function request<ReturnData>({ ...options }: AxiosRequestConfig): Promise<ReturnData> {
 	console.log(options);
