@@ -19,6 +19,7 @@ const client = axios.create({
 
 client.interceptors.request.use(
 	(config) => {
+		config.headers['Content-type'] = 'application/json';
 		config.headers['Authorization'] = 'Bearer ' + accessToken;
 		return config;
 	},
