@@ -1,15 +1,11 @@
-import { redirect } from '@sveltejs/kit';
-import { auth } from 'auth/auth';
 import type { PageServerLoad } from './$types';
-
-let authObject: { accessToken: string; userId: string };
-
-auth.subscribe((value) => {
-	authObject = value;
-});
+import { auth } from 'auth/auth';
+import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async () => {
-	if (authObject.accessToken || authObject.userId) {
-		throw redirect(308, '/dash');
-	}
+	auth.subscribe(({ accessToken, userId }: { accessToken: string; userId: string }) => {
+		if (accessToken || userId) {
+			throw redirect(308, '/dash');
+		}
+	});
 };
